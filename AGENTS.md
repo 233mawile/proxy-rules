@@ -33,6 +33,8 @@
 ## 约定
 
 - 新增脚本时，文件名放在 `subtrans/<name>.js`。
+- 修改或新增 `subtrans/` 下的处理脚本、共享逻辑时，必须补上对应的 JSDoc；公共函数、常量、processor 默认导出都应有清晰的类型或职责说明。
+- JSDoc 里的具体类型优先直接引用 `subtrans/types` 中已有的声明，例如 `ClashConfig`、`DnsConfig`、`ProxyGroup`；除非确实没有现成类型，否则不要自行重复定义或绕用不必要的推导类型。
 - 只要更新了 `subtrans/` 目录下的任何文件，提交前都必须运行一次 `npm run release`，同步重建 `release/` 产物。
 - `.env` 里需要有同名键 `<name>`，值为对应原始订阅地址。
 - `npm run release` 会扫描 `subtrans/` 顶层脚本，忽略 `subtrans/common.js`，重建 `release/`，并生成 `release/sources.json`。

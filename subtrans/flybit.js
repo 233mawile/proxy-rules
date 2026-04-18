@@ -1,11 +1,16 @@
 import {
+  DEFAULT_DNS_CONFIG,
   buildRules,
   buildProxyGroups,
   buildRuleProviders,
   extractProxyNames,
 } from "./common.js";
 
-/** @type {import("subtrans/types").Processor} */
+/**
+ * Rebuilds the local routing groups, rules, and DNS defaults for Flybit.
+ *
+ * @type {import("subtrans/types").Processor}
+ */
 export default function process(config) {
   const proxyNames = extractProxyNames(config);
 
@@ -15,6 +20,7 @@ export default function process(config) {
 
   return {
     ...config,
+    dns: DEFAULT_DNS_CONFIG,
     "proxy-groups": buildProxyGroups(proxyNames),
     "rule-providers": {
       ...(config["rule-providers"] ?? {}),

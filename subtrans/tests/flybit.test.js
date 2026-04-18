@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { DEFAULT_DNS_CONFIG } from "../common.js";
 import process from "../flybit.js";
 
 describe("flybit processor", () => {
@@ -108,5 +109,7 @@ describe("flybit processor", () => {
       cncidr: expect.any(Object),
       telegramcidr: expect.any(Object),
     });
+
+    expect(result.dns).toBe(DEFAULT_DNS_CONFIG);
   });
 });
