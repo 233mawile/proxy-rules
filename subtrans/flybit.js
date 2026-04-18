@@ -1,4 +1,4 @@
-/** @type {import("subtrans/processorTypes").Processor} */
+/** @type {import("subtrans/types").Processor} */
 export default function process(config) {
   const proxyGroups = Array.isArray(config["proxy-groups"])
     ? config["proxy-groups"]
