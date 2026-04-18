@@ -65,20 +65,20 @@ describe("buildProxyGroups", () => {
 });
 
 describe("buildRuleProviders", () => {
-  it("builds local and jsdelivr blacklist providers", () => {
+  it("builds local and remote blacklist providers", () => {
     expect(buildRuleProviders()).toMatchObject({
       AiDomain: {
         type: "http",
         behavior: "classical",
         format: "text",
-        url: "https://cdn.jsdelivr.net/gh/233mawile/proxy-rules@main/rules/ai.list",
+        url: "https://raw.githubusercontent.com/233mawile/proxy-rules/main/rules/ai.list",
       },
       RcDomain: {
         type: "http",
         behavior: "classical",
         format: "text",
         path: "./ruleset/RcDomain.list",
-        url: "https://cdn.jsdelivr.net/gh/233mawile/proxy-rules@main/rules/rc.list",
+        url: "https://raw.githubusercontent.com/233mawile/proxy-rules/main/rules/rc.list",
       },
       applications: {
         type: "http",

@@ -16,7 +16,7 @@ const DEFAULT_PROXY_NAME_BLACKLIST = [
 ];
 
 const OWN_RULES_BASE_URL =
-  "https://cdn.jsdelivr.net/gh/233mawile/proxy-rules@main/rules";
+  "https://raw.githubusercontent.com/233mawile/proxy-rules/main/rules";
 const LOYALSOLDIER_BASE_URL =
   "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release";
 

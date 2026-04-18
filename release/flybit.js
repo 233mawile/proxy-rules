@@ -8,7 +8,7 @@ var DEFAULT_PROXY_NAME_BLACKLIST = [
   "\u5173\u6CE8",
   "\u8BA2\u9605"
 ];
-var OWN_RULES_BASE_URL = "https://cdn.jsdelivr.net/gh/233mawile/proxy-rules@main/rules";
+var OWN_RULES_BASE_URL = "https://raw.githubusercontent.com/233mawile/proxy-rules/main/rules";
 var LOYALSOLDIER_BASE_URL = "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release";
 function isNamedProxy(proxy) {
   return typeof proxy === "object" && proxy !== null && typeof proxy.name === "string" && proxy.name.length > 0;

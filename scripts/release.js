@@ -8,9 +8,9 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, "..");
 const subtransDir = path.join(projectRoot, "subtrans");
 const releaseDir = path.join(projectRoot, "release");
-const deliverJsonPath = path.join(releaseDir, "deliver.json");
-const deliverBaseUrl =
-  "https://cdn.jsdelivr.net/gh/233mawile/proxy-rules@main/release";
+const sourcesJsonPath = path.join(releaseDir, "sources.json");
+const sourcesBaseUrl =
+  "https://raw.githubusercontent.com/233mawile/proxy-rules/main/release";
 const ignoredEntryFiles = new Set(["common.js"]);
 
 const dirEntries = await readdir(subtransDir, { withFileTypes: true });
@@ -30,7 +30,7 @@ if (entryFiles.length === 0) {
 await rm(releaseDir, { recursive: true, force: true });
 await mkdir(releaseDir, { recursive: true });
 
-const deliverConfig = {};
+const sourcesConfig = {};
 
 for (const entryFile of entryFiles) {
   const entryName = path.basename(entryFile, ".js");
@@ -47,10 +47,10 @@ for (const entryFile of entryFiles) {
     legalComments: "none",
   });
 
-  deliverConfig[entryName] = `${deliverBaseUrl}/${entryFile}`;
+  sourcesConfig[entryName] = `${sourcesBaseUrl}/${entryFile}`;
 }
 
 await writeFile(
-  deliverJsonPath,
-  JSON.stringify(deliverConfig, null, 2) + "\n",
+  sourcesJsonPath,
+  JSON.stringify(sourcesConfig, null, 2) + "\n",
 );

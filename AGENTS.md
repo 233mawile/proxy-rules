@@ -35,6 +35,7 @@
 - 新增脚本时，文件名放在 `subtrans/<name>.js`。
 - 只要更新了 `subtrans/` 目录下的任何文件，提交前都必须运行一次 `npm run release`，同步重建 `release/` 产物。
 - `.env` 里需要有同名键 `<name>`，值为对应原始订阅地址。
-- `npm run release` 会扫描 `subtrans/` 顶层脚本，忽略 `subtrans/common.js`，并重建 `release/`。
-- `npm run subscription` 会先执行 `release`，再根据 `.env` 和 `release/deliver.json` 生成 `subscription.json`。
+- `npm run release` 会扫描 `subtrans/` 顶层脚本，忽略 `subtrans/common.js`，重建 `release/`，并生成 `release/sources.json`。
+- `release/sources.json` 记录各发布脚本对应的 GitHub 原始文件地址（`raw.githubusercontent.com`）。
+- `npm run subscription` 会先执行 `release`，再根据 `.env` 和 `release/sources.json` 生成 `subscription.json`。
 - `subscription.json` 是本地生成文件，已加入 `.gitignore`，不提交。
