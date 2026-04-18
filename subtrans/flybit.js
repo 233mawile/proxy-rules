@@ -1,3 +1,4 @@
+/** @type {import("subtrans/processorTypes").Processor} */
 export default function process(config) {
   const proxyGroups = Array.isArray(config["proxy-groups"])
     ? config["proxy-groups"]
@@ -18,7 +19,7 @@ export default function process(config) {
   ];
 
   const nextProxyGroups = proxyGroups.filter(
-    (group) => group.name !== aiGroupName && group.name !== rcGroupName
+    (group) => group.name !== aiGroupName && group.name !== rcGroupName,
   );
 
   nextProxyGroups.push({

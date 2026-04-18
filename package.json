@@ -1,0 +1,23 @@
+{
+  "name": "proxy-rules",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/233mawile/proxy-rules#readme",
+  "bugs": {
+    "url": "https://github.com/233mawile/proxy-rules/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/233mawile/proxy-rules.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "subtrans": "github:233mawile/subtrans"
+  }
+}
