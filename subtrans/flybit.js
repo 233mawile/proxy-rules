@@ -1,5 +1,5 @@
 import {
-  buildBlacklistRules,
+  buildRules,
   buildProxyGroups,
   buildRuleProviders,
   extractProxyNames,
@@ -20,6 +20,6 @@ export default function process(config) {
       ...(config["rule-providers"] ?? {}),
       ...buildRuleProviders(),
     },
-    rules: buildBlacklistRules(),
+    rules: buildRules(),
   };
 }

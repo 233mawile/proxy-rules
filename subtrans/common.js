@@ -90,6 +90,11 @@ export function buildProxyGroups(proxyNames) {
       proxies: ["Proxy", ...proxyNames],
     },
     {
+      name: "CN",
+      type: "select",
+      proxies: ["DIRECT", "Proxy", ...proxyNames],
+    },
+    {
       name: "Others",
       type: "select",
       proxies: ["DIRECT", "Proxy", ...proxyNames],
@@ -142,20 +147,60 @@ export function buildRuleProviders() {
       path: "./ruleset/reject.yaml",
       interval: 86400,
     },
-    "tld-not-cn": {
+    icloud: {
       type: "http",
       behavior: "domain",
       format: "text",
-      url: `${LOYALSOLDIER_BASE_URL}/tld-not-cn.txt`,
-      path: "./ruleset/tld-not-cn.yaml",
+      url: `${LOYALSOLDIER_BASE_URL}/icloud.txt`,
+      path: "./ruleset/icloud.yaml",
       interval: 86400,
     },
-    gfw: {
+    apple: {
       type: "http",
       behavior: "domain",
       format: "text",
-      url: `${LOYALSOLDIER_BASE_URL}/gfw.txt`,
-      path: "./ruleset/gfw.yaml",
+      url: `${LOYALSOLDIER_BASE_URL}/apple.txt`,
+      path: "./ruleset/apple.yaml",
+      interval: 86400,
+    },
+    google: {
+      type: "http",
+      behavior: "domain",
+      format: "text",
+      url: `${LOYALSOLDIER_BASE_URL}/google.txt`,
+      path: "./ruleset/google.yaml",
+      interval: 86400,
+    },
+    proxy: {
+      type: "http",
+      behavior: "domain",
+      format: "text",
+      url: `${LOYALSOLDIER_BASE_URL}/proxy.txt`,
+      path: "./ruleset/proxy.yaml",
+      interval: 86400,
+    },
+    direct: {
+      type: "http",
+      behavior: "domain",
+      format: "text",
+      url: `${LOYALSOLDIER_BASE_URL}/direct.txt`,
+      path: "./ruleset/direct.yaml",
+      interval: 86400,
+    },
+    lancidr: {
+      type: "http",
+      behavior: "ipcidr",
+      format: "text",
+      url: `${LOYALSOLDIER_BASE_URL}/lancidr.txt`,
+      path: "./ruleset/lancidr.yaml",
+      interval: 86400,
+    },
+    cncidr: {
+      type: "http",
+      behavior: "ipcidr",
+      format: "text",
+      url: `${LOYALSOLDIER_BASE_URL}/cncidr.txt`,
+      path: "./ruleset/cncidr.yaml",
       interval: 86400,
     },
     telegramcidr: {
@@ -172,7 +217,7 @@ export function buildRuleProviders() {
 /**
  * @returns {string[]}
  */
-export function buildBlacklistRules() {
+export function buildRules() {
   return [
     "RULE-SET,AiDomain,AI",
     "RULE-SET,RcDomain,RC",
@@ -181,9 +226,16 @@ export function buildBlacklistRules() {
     "DOMAIN,yacd.haishan.me,DIRECT",
     "RULE-SET,private,DIRECT",
     "RULE-SET,reject,REJECT",
-    "RULE-SET,tld-not-cn,Proxy",
-    "RULE-SET,gfw,Proxy",
+    "RULE-SET,icloud,CN",
+    "RULE-SET,apple,CN",
+    "RULE-SET,google,Proxy",
+    "RULE-SET,proxy,Proxy",
+    "RULE-SET,direct,CN",
+    "RULE-SET,lancidr,DIRECT",
+    "RULE-SET,cncidr,CN",
     "RULE-SET,telegramcidr,Proxy",
+    "GEOIP,LAN,DIRECT",
+    "GEOIP,CN,CN",
     "MATCH,Others",
   ];
 }

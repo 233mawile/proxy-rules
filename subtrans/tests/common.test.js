@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  buildBlacklistRules,
+  buildRules,
   buildProxyGroups,
   buildRuleProviders,
   extractProxyNames,
@@ -50,11 +50,16 @@ describe("extractProxyNames", () => {
 });
 
 describe("buildProxyGroups", () => {
-  it("builds the four local select groups in order", () => {
+  it("builds the five local select groups in order", () => {
     expect(buildProxyGroups(["HK-01", "JP-01"])).toEqual([
       { name: "Proxy", type: "select", proxies: ["HK-01", "JP-01"] },
       { name: "AI", type: "select", proxies: ["Proxy", "HK-01", "JP-01"] },
       { name: "RC", type: "select", proxies: ["Proxy", "HK-01", "JP-01"] },
+      {
+        name: "CN",
+        type: "select",
+        proxies: ["DIRECT", "Proxy", "HK-01", "JP-01"],
+      },
       {
         name: "Others",
         type: "select",
@@ -65,7 +70,7 @@ describe("buildProxyGroups", () => {
 });
 
 describe("buildRuleProviders", () => {
-  it("builds local and remote blacklist providers", () => {
+  it("builds local and remote whitelist providers", () => {
     expect(buildRuleProviders()).toMatchObject({
       AiDomain: {
         type: "http",
@@ -98,17 +103,47 @@ describe("buildRuleProviders", () => {
         format: "text",
         url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt",
       },
-      "tld-not-cn": {
+      icloud: {
         type: "http",
         behavior: "domain",
         format: "text",
-        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt",
       },
-      gfw: {
+      apple: {
         type: "http",
         behavior: "domain",
         format: "text",
-        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt",
+      },
+      google: {
+        type: "http",
+        behavior: "domain",
+        format: "text",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt",
+      },
+      proxy: {
+        type: "http",
+        behavior: "domain",
+        format: "text",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt",
+      },
+      direct: {
+        type: "http",
+        behavior: "domain",
+        format: "text",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt",
+      },
+      lancidr: {
+        type: "http",
+        behavior: "ipcidr",
+        format: "text",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt",
+      },
+      cncidr: {
+        type: "http",
+        behavior: "ipcidr",
+        format: "text",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt",
       },
       telegramcidr: {
         type: "http",
@@ -120,9 +155,9 @@ describe("buildRuleProviders", () => {
   });
 });
 
-describe("buildBlacklistRules", () => {
-  it("puts ai and rc rules ahead of blacklist and sends fallback to Others", () => {
-    expect(buildBlacklistRules()).toEqual([
+describe("buildRules", () => {
+  it("puts ai and rc rules ahead of whitelist rules and sends fallback to Others", () => {
+    expect(buildRules()).toEqual([
       "RULE-SET,AiDomain,AI",
       "RULE-SET,RcDomain,RC",
       "RULE-SET,applications,DIRECT",
@@ -130,9 +165,16 @@ describe("buildBlacklistRules", () => {
       "DOMAIN,yacd.haishan.me,DIRECT",
       "RULE-SET,private,DIRECT",
       "RULE-SET,reject,REJECT",
-      "RULE-SET,tld-not-cn,Proxy",
-      "RULE-SET,gfw,Proxy",
+      "RULE-SET,icloud,CN",
+      "RULE-SET,apple,CN",
+      "RULE-SET,google,Proxy",
+      "RULE-SET,proxy,Proxy",
+      "RULE-SET,direct,CN",
+      "RULE-SET,lancidr,DIRECT",
+      "RULE-SET,cncidr,CN",
       "RULE-SET,telegramcidr,Proxy",
+      "GEOIP,LAN,DIRECT",
+      "GEOIP,CN,CN",
       "MATCH,Others",
     ]);
   });
