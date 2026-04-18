@@ -79,7 +79,7 @@ function buildRuleProviders() {
       behavior: "classical",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/applications.txt`,
-      path: "./ruleset/applications.yaml",
+      path: "./ruleset/applications.txt",
       interval: 86400
     },
     private: {
@@ -87,7 +87,7 @@ function buildRuleProviders() {
       behavior: "domain",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/private.txt`,
-      path: "./ruleset/private.yaml",
+      path: "./ruleset/private.txt",
       interval: 86400
     },
     reject: {
@@ -95,7 +95,7 @@ function buildRuleProviders() {
       behavior: "domain",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/reject.txt`,
-      path: "./ruleset/reject.yaml",
+      path: "./ruleset/reject.txt",
       interval: 86400
     },
     icloud: {
@@ -103,7 +103,7 @@ function buildRuleProviders() {
       behavior: "domain",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/icloud.txt`,
-      path: "./ruleset/icloud.yaml",
+      path: "./ruleset/icloud.txt",
       interval: 86400
     },
     apple: {
@@ -111,7 +111,7 @@ function buildRuleProviders() {
       behavior: "domain",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/apple.txt`,
-      path: "./ruleset/apple.yaml",
+      path: "./ruleset/apple.txt",
       interval: 86400
     },
     google: {
@@ -119,7 +119,7 @@ function buildRuleProviders() {
       behavior: "domain",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/google.txt`,
-      path: "./ruleset/google.yaml",
+      path: "./ruleset/google.txt",
       interval: 86400
     },
     proxy: {
@@ -127,7 +127,7 @@ function buildRuleProviders() {
       behavior: "domain",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/proxy.txt`,
-      path: "./ruleset/proxy.yaml",
+      path: "./ruleset/proxy.txt",
       interval: 86400
     },
     direct: {
@@ -135,7 +135,7 @@ function buildRuleProviders() {
       behavior: "domain",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/direct.txt`,
-      path: "./ruleset/direct.yaml",
+      path: "./ruleset/direct.txt",
       interval: 86400
     },
     lancidr: {
@@ -143,7 +143,7 @@ function buildRuleProviders() {
       behavior: "ipcidr",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/lancidr.txt`,
-      path: "./ruleset/lancidr.yaml",
+      path: "./ruleset/lancidr.txt",
       interval: 86400
     },
     cncidr: {
@@ -151,7 +151,7 @@ function buildRuleProviders() {
       behavior: "ipcidr",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/cncidr.txt`,
-      path: "./ruleset/cncidr.yaml",
+      path: "./ruleset/cncidr.txt",
       interval: 86400
     },
     telegramcidr: {
@@ -159,7 +159,7 @@ function buildRuleProviders() {
       behavior: "ipcidr",
       format: "text",
       url: `${LOYALSOLDIER_BASE_URL}/telegramcidr.txt`,
-      path: "./ruleset/telegramcidr.yaml",
+      path: "./ruleset/telegramcidr.txt",
       interval: 86400
     }
   };
