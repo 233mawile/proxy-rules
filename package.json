@@ -1,7 +1,7 @@
 {
   "name": "proxy-rules",
   "version": "1.0.0",
-  "description": "",
+  "description": "My proxy rules",
   "homepage": "https://github.com/233mawile/proxy-rules#readme",
   "bugs": {
     "url": "https://github.com/233mawile/proxy-rules/issues"
@@ -10,21 +10,19 @@
     "type": "git",
     "url": "git+https://github.com/233mawile/proxy-rules.git"
   },
-  "license": "ISC",
-  "author": "",
+  "author": "233mawile",
   "type": "module",
-  "main": "index.js",
   "scripts": {
     "test": "vitest run",
     "release": "node scripts/release.js",
+    "presubscription": "npm run release",
     "subscription": "node scripts/subscription.js"
   },
-  "dependencies": {
-    "dotenv": "^16.6.1",
-    "subtrans": "github:233mawile/subtrans"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "dotenv": "^16.6.1",
     "esbuild": "^0.25.11",
+    "subtrans": "github:233mawile/subtrans",
     "vitest": "^3.2.4"
   }
 }
