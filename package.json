@@ -12,12 +12,19 @@
   },
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "release": "node scripts/release.js",
+    "subscription": "node scripts/subscription.js"
   },
   "dependencies": {
+    "dotenv": "^16.6.1",
     "subtrans": "github:233mawile/subtrans"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.11",
+    "vitest": "^3.2.4"
   }
 }
