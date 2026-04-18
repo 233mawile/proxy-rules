@@ -33,6 +33,7 @@
 ## 约定
 
 - 新增脚本时，文件名放在 `subtrans/<name>.js`。
+- 只要更新了 `subtrans/` 目录下的任何文件，提交前都必须运行一次 `npm run release`，同步重建 `release/` 产物。
 - `.env` 里需要有同名键 `<name>`，值为对应原始订阅地址。
 - `npm run release` 会扫描 `subtrans/` 顶层脚本，忽略 `subtrans/common.js`，并重建 `release/`。
 - `npm run subscription` 会先执行 `release`，再根据 `.env` 和 `release/deliver.json` 生成 `subscription.json`。

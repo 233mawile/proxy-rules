@@ -19,6 +19,34 @@ describe("extractProxyNames", () => {
 
     expect(extractProxyNames(config)).toEqual(["HK-01", "JP-01"]);
   });
+
+  it("filters proxy names by the built-in blacklist keywords", () => {
+    const config = {
+      proxies: [
+        { name: "HK-01", type: "ss" },
+        { name: "机场订阅地址", type: "ss" },
+        { name: "关注频道获取节点", type: "vmess" },
+      ],
+    };
+
+    expect(extractProxyNames(config)).toEqual(["HK-01"]);
+  });
+
+  it("appends caller-provided blacklist keywords", () => {
+    const config = {
+      proxies: [
+        { name: "HK-01", type: "ss" },
+        { name: "US-实验性", type: "vmess" },
+        { name: "JP-01", type: "trojan" },
+      ],
+    };
+
+    expect(
+      extractProxyNames(config, {
+        blacklist: ["实验", "", /** @type {any} */ (null)],
+      }),
+    ).toEqual(["HK-01", "JP-01"]);
+  });
 });
 
 describe("buildProxyGroups", () => {
@@ -52,6 +80,24 @@ describe("buildRuleProviders", () => {
         path: "./ruleset/RcDomain.list",
         url: "https://cdn.jsdelivr.net/gh/233mawile/proxy-rules@main/rules/rc.list",
       },
+      applications: {
+        type: "http",
+        behavior: "classical",
+        format: "text",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt",
+      },
+      private: {
+        type: "http",
+        behavior: "domain",
+        format: "text",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt",
+      },
+      reject: {
+        type: "http",
+        behavior: "domain",
+        format: "text",
+        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt",
+      },
       "tld-not-cn": {
         type: "http",
         behavior: "domain",
@@ -79,6 +125,11 @@ describe("buildBlacklistRules", () => {
     expect(buildBlacklistRules()).toEqual([
       "RULE-SET,AiDomain,AI",
       "RULE-SET,RcDomain,RC",
+      "RULE-SET,applications,DIRECT",
+      "DOMAIN,clash.razord.top,DIRECT",
+      "DOMAIN,yacd.haishan.me,DIRECT",
+      "RULE-SET,private,DIRECT",
+      "RULE-SET,reject,REJECT",
       "RULE-SET,tld-not-cn,Proxy",
       "RULE-SET,gfw,Proxy",
       "RULE-SET,telegramcidr,Proxy",

@@ -12,6 +12,19 @@ describe("flybit processor", () => {
     expect(process(config)).toBe(config);
   });
 
+  it("returns the original config when all named proxies are filtered by blacklist", () => {
+    const config = {
+      proxies: [
+        { name: "邀请好友返现", type: "ss" },
+        { name: "订阅地址发布页", type: "vmess" },
+      ],
+      "proxy-groups": [{ name: "Old", type: "select", proxies: ["A"] }],
+      rules: ["MATCH,DIRECT"],
+    };
+
+    expect(process(config)).toBe(config);
+  });
+
   it("replaces airport groups and writes local rules and providers", () => {
     const config = {
       proxies: [
@@ -55,6 +68,11 @@ describe("flybit processor", () => {
       rules: [
         "RULE-SET,AiDomain,AI",
         "RULE-SET,RcDomain,RC",
+        "RULE-SET,applications,DIRECT",
+        "DOMAIN,clash.razord.top,DIRECT",
+        "DOMAIN,yacd.haishan.me,DIRECT",
+        "RULE-SET,private,DIRECT",
+        "RULE-SET,reject,REJECT",
         "RULE-SET,tld-not-cn,Proxy",
         "RULE-SET,gfw,Proxy",
         "RULE-SET,telegramcidr,Proxy",
@@ -66,6 +84,9 @@ describe("flybit processor", () => {
       old: config["rule-providers"].old,
       AiDomain: expect.any(Object),
       RcDomain: expect.any(Object),
+      applications: expect.any(Object),
+      private: expect.any(Object),
+      reject: expect.any(Object),
       "tld-not-cn": expect.any(Object),
       gfw: expect.any(Object),
       telegramcidr: expect.any(Object),
