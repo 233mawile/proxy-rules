@@ -207,7 +207,7 @@ describe("buildRuleProviders", () => {
         type: "http",
         behavior: "domain",
         path: "./ruleset/reject.yaml",
-        url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt",
+        url: "https://gcore.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockmihomo.yaml",
       },
       icloud: {
         type: "http",

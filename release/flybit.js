@@ -10,6 +10,7 @@ var DEFAULT_PROXY_NAME_BLACKLIST = [
 ];
 var OWN_RULES_BASE_URL = "https://raw.githubusercontent.com/233mawile/proxy-rules/main/rules";
 var LOYALSOLDIER_BASE_URL = "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release";
+var ADBLOCK_RULES_REJECT_URL = "https://gcore.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockmihomo.yaml";
 var DEFAULT_DNS_CONFIG = {
   enable: true,
   listen: "0.0.0.0:53",
@@ -191,7 +192,7 @@ function buildRuleProviders() {
     reject: {
       type: "http",
       behavior: "domain",
-      url: `${LOYALSOLDIER_BASE_URL}/reject.txt`,
+      url: ADBLOCK_RULES_REJECT_URL,
       path: "./ruleset/reject.yaml",
       interval: 86400
     },
