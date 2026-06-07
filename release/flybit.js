@@ -180,7 +180,7 @@ function buildRuleProviders() {
       behavior: "classical",
       format: "text",
       url: `${OWN_RULES_BASE_URL}/externalSteamCN.list`,
-      path: "./ruleset/RcDomain.list",
+      path: "./ruleset/ExternalSteamCnDomain.list",
       interval: 86400
     },
     applications: {
