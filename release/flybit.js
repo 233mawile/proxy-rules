@@ -175,6 +175,14 @@ function buildRuleProviders() {
       path: "./ruleset/RcDomain.list",
       interval: 86400
     },
+    ExternalSteamCnDomain: {
+      type: "http",
+      behavior: "classical",
+      format: "text",
+      url: `${OWN_RULES_BASE_URL}/externalSteamCN.list`,
+      path: "./ruleset/RcDomain.list",
+      interval: 86400
+    },
     applications: {
       type: "http",
       behavior: "classical",
@@ -258,6 +266,7 @@ function buildRules() {
   return [
     "RULE-SET,AiDomain,AI",
     "RULE-SET,RcDomain,RC",
+    "RULE-SET,ExternalSteamCnDomain,DIRECT",
     "RULE-SET,applications,DIRECT",
     "DOMAIN,clash.razord.top,DIRECT",
     "DOMAIN,yacd.haishan.me,DIRECT",
