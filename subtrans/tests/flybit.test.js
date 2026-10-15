@@ -56,24 +56,31 @@ describe("flybit processor", () => {
 
     expect(result).toMatchObject({
       proxies: config.proxies,
+      "unified-delay": true,
       "proxy-groups": [
-        { name: "Proxy", type: "select", proxies: ["HK-01", "US-01"] },
-        { name: "AI", type: "select", proxies: ["Proxy", "HK-01", "US-01"] },
-        { name: "RC", type: "select", proxies: ["Proxy", "HK-01", "US-01"] },
+        { name: "Proxy", type: "select", proxies: ["Auto", "HK-Auto", "HK-01", "US-01"], "default-selected": "Auto" },
+        { name: "AI", type: "select", proxies: ["AI-Auto", "HK-Auto", "HK-01", "US-01"], "default-selected": "AI-Auto" },
+        { name: "RC", type: "select", proxies: ["Auto", "HK-Auto", "Proxy", "HK-01", "US-01"], "default-selected": "Proxy" },
         {
           name: "CN",
           type: "select",
-          proxies: ["DIRECT", "Proxy", "HK-01", "US-01"],
+          proxies: ["Auto", "HK-Auto", "DIRECT", "Proxy", "HK-01", "US-01"],
+          "default-selected": "DIRECT",
         },
         {
           name: "Others",
           type: "select",
-          proxies: ["DIRECT", "Proxy", "HK-01", "US-01"],
+          proxies: ["Auto", "HK-Auto", "DIRECT", "Proxy", "HK-01", "US-01"],
+          "default-selected": "DIRECT",
         },
+        { name: "Auto", type: "url-test", tolerance: 120, proxies: ["HK-Auto"] },
+        { name: "AI-Auto", type: "fallback", proxies: ["REJECT"] },
+        { name: "HK-Auto", type: "url-test", tolerance: 40, proxies: ["HK-01"] },
       ],
       rules: [
         "RULE-SET,AiDomain,AI",
         "RULE-SET,RcDomain,RC",
+        "RULE-SET,ExternalSteamCnDomain,DIRECT",
         "RULE-SET,applications,DIRECT",
         "DOMAIN,clash.razord.top,DIRECT",
         "DOMAIN,yacd.haishan.me,DIRECT",
@@ -111,5 +118,47 @@ describe("flybit processor", () => {
     });
 
     expect(result.dns).toBe(DEFAULT_DNS_CONFIG);
+  });
+
+  it("builds ordered regional groups with distinct switching tolerances", () => {
+    const names = ["JP01", "🇵🇭 菲律宾 01", "TW-01", "Singapore 01", "香港 01", "HK02", "US01"];
+    const result = process({ proxies: names.map((name) => ({ name, type: "ss" })) });
+    const groups = result["proxy-groups"];
+    const find = (name) => groups.find((group) => group.name === name);
+
+    expect(find("Auto")).toMatchObject({
+      type: "url-test", tolerance: 120, proxies: ["HK-Auto", "SG-Auto", "TW-Auto"],
+    });
+    expect(find("AI-Auto")).toMatchObject({
+      type: "fallback", proxies: ["PH-Auto", "SG-Auto", "JP-Auto"],
+    });
+    expect(find("HK-Auto")).toMatchObject({ tolerance: 40, proxies: ["香港 01", "HK02"] });
+    expect(find("SG-Auto")).toMatchObject({ tolerance: 80, proxies: ["Singapore 01"] });
+    expect(find("TW-Auto")).toMatchObject({ tolerance: 80, proxies: ["TW-01"] });
+    expect(find("PH-Auto")).toMatchObject({ tolerance: 80, proxies: ["🇵🇭 菲律宾 01"] });
+    expect(find("JP-Auto")).toMatchObject({ tolerance: 80, proxies: ["JP01"] });
+    expect(find("AI").proxies).not.toContain("Proxy");
+    expect(find("AI").proxies).not.toContain("Auto");
+    for (const name of ["Proxy", "RC", "CN", "Others"]) {
+      expect(find(name).proxies.slice(0, 6)).toEqual([
+        "Auto", "HK-Auto", "SG-Auto", "TW-Auto", "PH-Auto", "JP-Auto",
+      ]);
+    }
+    expect(find("AI").proxies.slice(0, 6)).toEqual([
+      "AI-Auto", "PH-Auto", "SG-Auto", "JP-Auto", "HK-Auto", "TW-Auto",
+    ]);
+
+    for (const group of groups.filter((group) => group.type !== "select")) {
+      expect(group).toMatchObject({
+        url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true,
+      });
+    }
+  });
+
+  it("omits missing regions and never falls back to unrelated countries", () => {
+    const groups = process({ proxies: [{ name: "US01", type: "ss" }] })["proxy-groups"];
+    expect(groups.map((group) => group.name)).toEqual(["Proxy", "AI", "RC", "CN", "Others", "Auto", "AI-Auto"]);
+    expect(groups.find((group) => group.name === "Auto").proxies).toEqual(["REJECT"]);
+    expect(groups.find((group) => group.name === "AI-Auto").proxies).toEqual(["REJECT"]);
   });
 });

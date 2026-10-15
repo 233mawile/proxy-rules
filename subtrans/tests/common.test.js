@@ -266,6 +266,7 @@ describe("buildRules", () => {
     expect(buildRules()).toEqual([
       "RULE-SET,AiDomain,AI",
       "RULE-SET,RcDomain,RC",
+      "RULE-SET,ExternalSteamCnDomain,DIRECT",
       "RULE-SET,applications,DIRECT",
       "DOMAIN,clash.razord.top,DIRECT",
       "DOMAIN,yacd.haishan.me,DIRECT",
