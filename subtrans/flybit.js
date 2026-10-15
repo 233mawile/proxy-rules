@@ -7,7 +7,7 @@ import {
 } from "./common.js";
 
 /**
- * Rebuilds the local routing groups, rules, and DNS defaults for Flybit.
+ * Rebuilds Flybit routing and DNS defaults, and enables unified delay testing.
  *
  * @type {import("subtrans/types").Processor}
  */
@@ -20,6 +20,7 @@ export default function process(config) {
 
   return {
     ...config,
+    "unified-delay": true,
     dns: DEFAULT_DNS_CONFIG,
     "proxy-groups": buildProxyGroups(proxyNames),
     "rule-providers": {

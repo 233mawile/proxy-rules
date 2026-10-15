@@ -294,6 +294,7 @@ function process(config) {
   }
   return {
     ...config,
+    "unified-delay": true,
     dns: DEFAULT_DNS_CONFIG,
     "proxy-groups": buildProxyGroups(proxyNames),
     "rule-providers": {
