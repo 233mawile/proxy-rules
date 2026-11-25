@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import process, { NO_HK_AUTO } from "../mojie.js";
+import process, { GPT_AUTO, NO_HK_AUTO } from "../mojie.js";
 
 const base = () => ({
   proxies: [
@@ -7,6 +7,7 @@ const base = () => ({
     { name: "香港-优化", type: "ss" },
     { name: "香港HK-HY2", type: "hysteria2" },
     { name: "新加坡-优化-GPT", type: "ss" },
+    { name: "美国LA-优化-GPT", type: "ss" },
     { name: "日本-优化", type: "ss" },
   ],
   "proxy-groups": [
@@ -18,17 +19,30 @@ const base = () => ({
 });
 
 describe("mojie processor", () => {
-  it("defaults Google and ChatGPT to a HK-free auto group with ChatGPT choices", () => {
+  it("adds NoHK-Auto and GPT-Auto groups for Google and ChatGPT", () => {
     const config = base();
     const result = process(config);
     const groups = result["proxy-groups"];
-    const choices = [NO_HK_AUTO, "节点选择", "新加坡-优化-GPT"];
 
-    expect(groups.find((g) => g.name === "ChatGPT").proxies).toEqual(choices);
-    expect(groups.find((g) => g.name === "谷歌服务").proxies).toEqual(choices);
+    expect(groups.find((g) => g.name === "ChatGPT").proxies).toEqual([
+      GPT_AUTO,
+      NO_HK_AUTO,
+      "节点选择",
+      "新加坡-优化-GPT",
+    ]);
+    expect(groups.find((g) => g.name === "谷歌服务").proxies).toEqual([
+      NO_HK_AUTO,
+      GPT_AUTO,
+      "节点选择",
+      "新加坡-优化-GPT",
+    ]);
     expect(groups.find((g) => g.name === NO_HK_AUTO)).toMatchObject({
       type: "url-test",
-      proxies: ["新加坡-优化-GPT", "日本-优化"],
+      proxies: ["新加坡-优化-GPT", "美国LA-优化-GPT", "日本-优化"],
+    });
+    expect(groups.find((g) => g.name === GPT_AUTO)).toMatchObject({
+      type: "url-test",
+      proxies: ["新加坡-优化-GPT", "美国LA-优化-GPT"],
     });
     expect(groups[0]).toEqual(config["proxy-groups"][0]);
     expect(result.rules).toBe(config.rules);
