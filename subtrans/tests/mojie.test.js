@@ -20,7 +20,7 @@ const base = () => ({
 });
 
 describe("mojie processor", () => {
-  it("adds NoHK-Auto and GPT-Auto groups for ChatGPT, Gemini, and Google", () => {
+  it("adds NoHK-Auto and GPT-Auto groups for ChatGPT and Gemini without changing Google", () => {
     const config = base();
     const result = process(config);
     const groups = result["proxy-groups"];
@@ -28,12 +28,9 @@ describe("mojie processor", () => {
 
     expect(groups.find((g) => g.name === "ChatGPT").proxies).toEqual(aiChoices);
     expect(groups.find((g) => g.name === "Gemini").proxies).toEqual(aiChoices);
-    expect(groups.find((g) => g.name === "谷歌服务").proxies).toEqual([
-      NO_HK_AUTO,
-      GPT_AUTO,
-      "节点选择",
-      "新加坡-优化-GPT",
-    ]);
+    expect(groups.find((g) => g.name === "谷歌服务")).toEqual(
+      config["proxy-groups"].find((g) => g.name === "谷歌服务"),
+    );
     expect(groups.find((g) => g.name === NO_HK_AUTO)).toMatchObject({
       type: "url-test",
       proxies: ["新加坡-优化-GPT", "美国LA-优化-GPT", "日本-优化"],

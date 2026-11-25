@@ -29,7 +29,6 @@ function extractProxyNames(config, options = {}) {
 // subtrans/mojie.js
 var NO_HK_AUTO = "NoHK-Auto";
 var GPT_AUTO = "GPT-Auto";
-var GOOGLE_GROUP = "\u8C37\u6B4C\u670D\u52A1";
 var CHATGPT_GROUP = "ChatGPT";
 var GEMINI_GROUP = "Gemini";
 var HK_PATTERN = /香港|🇭🇰|hong[ -]?kong|\bHK(?=\b|\d)/i;
@@ -56,16 +55,12 @@ function process(config) {
   const baseChoices = (chatgpt.proxies ?? []).filter(
     (name) => name !== NO_HK_AUTO && name !== GPT_AUTO
   );
-  const chatgptChoices = [GPT_AUTO, NO_HK_AUTO, ...baseChoices];
-  const googleChoices = [NO_HK_AUTO, GPT_AUTO, ...baseChoices];
+  const aiChoices = [GPT_AUTO, NO_HK_AUTO, ...baseChoices];
   const noHkProxies = proxyNames.filter((name) => !HK_PATTERN.test(name));
   const gptProxies = noHkProxies.filter((name) => GPT_PATTERN.test(name));
   const nextGroups = groups.map((group) => {
     if (group.name === CHATGPT_GROUP || group.name === GEMINI_GROUP) {
-      return { ...group, type: "select", proxies: [...chatgptChoices] };
-    }
-    if (group.name === GOOGLE_GROUP) {
-      return { ...group, type: "select", proxies: [...googleChoices] };
+      return { ...group, type: "select", proxies: [...aiChoices] };
     }
     return group;
   });

@@ -11,9 +11,6 @@ export const NO_HK_AUTO = "NoHK-Auto";
 /** Name of the injected url-test group for non-HK GPT-optimized nodes. */
 export const GPT_AUTO = "GPT-Auto";
 
-/** Airport group that carries Google traffic. */
-const GOOGLE_GROUP = "谷歌服务";
-
 /** Airport group that carries ChatGPT traffic. */
 const CHATGPT_GROUP = "ChatGPT";
 
@@ -50,8 +47,8 @@ function buildAutoGroup(name, candidates) {
 
 /**
  * Keeps Mojie's own rules and groups, but adds HK-free and GPT-optimized auto
- * groups. ChatGPT defaults to GPT-Auto, Google (Gemini) defaults to NoHK-Auto,
- * and both offer the same manual choices.
+ * groups for ChatGPT and Gemini. Both default to GPT-Auto and offer the same
+ * manual choices.
  *
  * @type {import("subtrans/types").Processor}
  */
@@ -67,8 +64,7 @@ export default function process(config) {
   const baseChoices = (chatgpt.proxies ?? []).filter(
     (name) => name !== NO_HK_AUTO && name !== GPT_AUTO,
   );
-  const chatgptChoices = [GPT_AUTO, NO_HK_AUTO, ...baseChoices];
-  const googleChoices = [NO_HK_AUTO, GPT_AUTO, ...baseChoices];
+  const aiChoices = [GPT_AUTO, NO_HK_AUTO, ...baseChoices];
 
   const noHkProxies = proxyNames.filter((name) => !HK_PATTERN.test(name));
   const gptProxies = noHkProxies.filter((name) => GPT_PATTERN.test(name));
@@ -76,10 +72,7 @@ export default function process(config) {
   /** @type {ProxyGroup[]} */
   const nextGroups = groups.map((group) => {
     if (group.name === CHATGPT_GROUP || group.name === GEMINI_GROUP) {
-      return { ...group, type: "select", proxies: [...chatgptChoices] };
-    }
-    if (group.name === GOOGLE_GROUP) {
-      return { ...group, type: "select", proxies: [...googleChoices] };
+      return { ...group, type: "select", proxies: [...aiChoices] };
     }
     return group;
   });
