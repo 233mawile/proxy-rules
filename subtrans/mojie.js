@@ -11,11 +11,14 @@ export const NO_HK_AUTO = "NoHK-Auto";
 /** Name of the injected url-test group for non-HK GPT-optimized nodes. */
 export const GPT_AUTO = "GPT-Auto";
 
-/** Airport group that carries Google traffic, including Gemini. */
+/** Airport group that carries Google traffic. */
 const GOOGLE_GROUP = "谷歌服务";
 
 /** Airport group that carries ChatGPT traffic. */
 const CHATGPT_GROUP = "ChatGPT";
+
+/** Airport group that carries Gemini traffic. */
+const GEMINI_GROUP = "Gemini";
 
 /** Matches Hong Kong node names. */
 const HK_PATTERN = /香港|🇭🇰|hong[ -]?kong|\bHK(?=\b|\d)/i;
@@ -72,7 +75,7 @@ export default function process(config) {
 
   /** @type {ProxyGroup[]} */
   const nextGroups = groups.map((group) => {
-    if (group.name === CHATGPT_GROUP) {
+    if (group.name === CHATGPT_GROUP || group.name === GEMINI_GROUP) {
       return { ...group, type: "select", proxies: [...chatgptChoices] };
     }
     if (group.name === GOOGLE_GROUP) {

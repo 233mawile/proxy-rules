@@ -13,23 +13,21 @@ const base = () => ({
   "proxy-groups": [
     { name: "节点选择", type: "select", proxies: ["自动选择", "香港-优化"] },
     { name: "ChatGPT", type: "select", proxies: ["节点选择", "新加坡-优化-GPT"] },
+    { name: "Gemini", type: "select", proxies: ["节点选择"] },
     { name: "谷歌服务", type: "select", proxies: ["节点选择", "香港-优化", "日本-优化"] },
   ],
-  rules: ["DOMAIN-SUFFIX,gemini.google.com,谷歌服务", "MATCH,节点选择"],
+  rules: ["DOMAIN-SUFFIX,gemini.google.com,Gemini", "MATCH,节点选择"],
 });
 
 describe("mojie processor", () => {
-  it("adds NoHK-Auto and GPT-Auto groups for Google and ChatGPT", () => {
+  it("adds NoHK-Auto and GPT-Auto groups for ChatGPT, Gemini, and Google", () => {
     const config = base();
     const result = process(config);
     const groups = result["proxy-groups"];
+    const aiChoices = [GPT_AUTO, NO_HK_AUTO, "节点选择", "新加坡-优化-GPT"];
 
-    expect(groups.find((g) => g.name === "ChatGPT").proxies).toEqual([
-      GPT_AUTO,
-      NO_HK_AUTO,
-      "节点选择",
-      "新加坡-优化-GPT",
-    ]);
+    expect(groups.find((g) => g.name === "ChatGPT").proxies).toEqual(aiChoices);
+    expect(groups.find((g) => g.name === "Gemini").proxies).toEqual(aiChoices);
     expect(groups.find((g) => g.name === "谷歌服务").proxies).toEqual([
       NO_HK_AUTO,
       GPT_AUTO,

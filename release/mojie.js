@@ -31,6 +31,7 @@ var NO_HK_AUTO = "NoHK-Auto";
 var GPT_AUTO = "GPT-Auto";
 var GOOGLE_GROUP = "\u8C37\u6B4C\u670D\u52A1";
 var CHATGPT_GROUP = "ChatGPT";
+var GEMINI_GROUP = "Gemini";
 var HK_PATTERN = /香港|🇭🇰|hong[ -]?kong|\bHK(?=\b|\d)/i;
 var GPT_PATTERN = /gpt/i;
 var INFO_NODE_BLACKLIST = ["\u5269\u4F59\u6D41\u91CF", "\u5957\u9910\u5230\u671F", "\u8FC7\u6EE4\u6389"];
@@ -60,7 +61,7 @@ function process(config) {
   const noHkProxies = proxyNames.filter((name) => !HK_PATTERN.test(name));
   const gptProxies = noHkProxies.filter((name) => GPT_PATTERN.test(name));
   const nextGroups = groups.map((group) => {
-    if (group.name === CHATGPT_GROUP) {
+    if (group.name === CHATGPT_GROUP || group.name === GEMINI_GROUP) {
       return { ...group, type: "select", proxies: [...chatgptChoices] };
     }
     if (group.name === GOOGLE_GROUP) {
